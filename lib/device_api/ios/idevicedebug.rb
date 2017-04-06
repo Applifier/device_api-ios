@@ -22,7 +22,7 @@ module DeviceAPI
 
         raise IDeviceDebugError.new(result.stderr) unless [0, 255, 142].include?(result.exit)
 
-        result.stdout.split("\r\n")
+        result.stdout.scrub.split("\r\n")
       end
     end
 
