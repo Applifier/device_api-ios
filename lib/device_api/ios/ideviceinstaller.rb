@@ -46,8 +46,15 @@ module DeviceAPI
         raise IDeviceInstallerError.new(result.stderr) if result.exit != 0
 
         lines = result.stdout.split("\n").map { |line| line.gsub('-', '').strip }
+        # Debugging:
+        # 'ios/ideviceinstaller.rb:50:in `change_package': undefined method `match' for nil:NilClass (NoMethodError)'
+        begin
+          complete = lines.last.match('Complete')
+        rescue NoMethodError
+          puts "'DEBUG: lines=#{lines}'"
+        end
+        return true if complete
 
-        return true if lines.last.match('Complete')
         false
       end
 
